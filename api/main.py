@@ -11,9 +11,9 @@ with open("q-vercel-python.json", "r") as f:
 name_marks = {item["name"]: item["marks"] for item in data}
 
 @app.get("/api")
-async def get_marks(names: list[str] = Query(..., description="List of names to get marks for")):
+async def get_marks(name: list[str] = Query(..., description="List of name to get marks for")):
     try:
-        marks = [name_marks[name] for name in names]
+        marks = [name_marks[name_val] for name_val in name]
     except KeyError as e:
         raise HTTPException(
             status_code=404,
