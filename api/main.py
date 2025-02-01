@@ -32,4 +32,4 @@ async def get_marks(name: list[str] = Query(..., description="List of name to ge
 
 @app.get("/")
 async def read_root():
-    return {"Hello": "World"}
+    return {"Hello": "World", "Build Number": "5"}

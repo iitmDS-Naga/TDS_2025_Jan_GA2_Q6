@@ -1,0 +1,39 @@
+name: Increment Build Number
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  increment-build-number:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 23f3004114@ds.study.iitm.ac.in
+      run: echo "Hello, world!"
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Increment build number
+      id: increment
+      run: |
+        file="api/main.py"
+        build_number=$(grep -oP '(?<=Build Number": ")[0-9]+' $file)
+        new_build_number=$((build_number + 1))
+        sed -i "s/\"Build Number\": \"$build_number\"/\"Build Number\": \"$new_build_number\"/" $file
+        echo "New build number: $new_build_number"
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add api/main.py
+        git commit -m "Increment build number to ${{ steps.increment.outputs.new_build_number }}"
+        git push
